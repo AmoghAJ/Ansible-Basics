@@ -1,0 +1,23 @@
+--- #Bootstap Apache webserver
+- hosts: webservers
+  become: yes
+  tasks:
+    - name: install httpd
+      yum:
+        name: httpd
+        state: latest
+    
+    - name: Create index.html
+      file:
+        name: /var/www/html/index.html
+        state: present
+    
+    - name: Add content to index.html
+      lineinfile:
+        line: "Hello Ansible World!"
+        path: /var/www/html/index.html
+    
+    - name: start httpd service
+      service:
+        name: httpd
+        state: started
