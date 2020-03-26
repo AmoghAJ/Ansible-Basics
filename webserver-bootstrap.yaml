@@ -10,7 +10,7 @@
     - name: Create index.html
       file:
         name: /var/www/html/index.html
-        state: present
+        state: touch
     
     - name: Add content to index.html
       lineinfile:
