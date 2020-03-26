@@ -22,12 +22,12 @@
         path: /var/www/html/index.html
       notify:
         - restart httpd
-        
+
   handlers:
     - name: Attempt to restart httpd
       service:
-        - name: "{{target_service}}"
-          state: restarted
+        name: "{{target_service}}"
+        state: restarted
       listen: "restart httpd"
 
 
