@@ -2,10 +2,14 @@
 - hosts: webservers
   become: yes
   tasks:
+    - debug:
+        var: "{{target_service}}"
     - name: install httpd
       yum:
         name: "{{target_service}}"
         state: latest
+      notify:
+        - restart httpd
     
     - name: Create index.html
       file:
@@ -16,10 +20,15 @@
       lineinfile:
         line: "{{ansible_hostname}}"
         path: /var/www/html/index.html
-    
-    - name: start httpd service
+      notify:
+        - restart httpd
+        
+  handlers:
+    - name: Attempt to restart httpd
       service:
-        name: "{{target_service}}"
-        state: started
+        - name: "{{target_service}}"
+          state: restarted
+      listen: "restart httpd"
+
 
 #ansible-playbook webserver-bootstrap.yaml -e "target_service=httpd"
