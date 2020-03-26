@@ -4,7 +4,7 @@
   tasks:
     - name: install httpd
       yum:
-        name: httpd
+        name: "{{target_service}}"
         state: latest
     
     - name: Create index.html
@@ -14,10 +14,12 @@
     
     - name: Add content to index.html
       lineinfile:
-        line: "Hello Ansible World!"
+        line: "{{ansible_hostname}}"
         path: /var/www/html/index.html
     
     - name: start httpd service
       service:
-        name: httpd
+        name: "{{target_service}}"
         state: started
+
+#ansible-playbook webserver-bootstrap.yaml -e "target_service=httpd"
